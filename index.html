@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="jumbotron text-center">
+  <h1>Conversor de habilidades </h1>
+  <p>Converte as habilidades copiadas do Notion para o template do Roll20</p>
+  <p><small>Após colar, adicione um "tab" e escreva o valor da rolagem no formato XdY (2d6, 1d20, etc). Escreva 0 caso não haja.</small> </p> 
+</div>
+  
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6">
+      <h3 class="center">Cópia do Notion</h3>
+      <div class="form-group">
+        <textarea id="copy" class="form-control" rows="10" cols="50"> </textarea>
+      </div>
+  </div>
+    <div class="col-sm-6">
+      <h3 class="center">Resultado no template</h3>
+      
+      <div class="form-group">
+        <textarea id="template" class="form-control" rows="10" cols="50"> </textarea>  
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 text-center">
+        <button id="envio" class="btn">Converter</button>
+    </div>
+  </div>
+</div>
+
+<script>
+    $("#envio").click(function(){
+        var copy_values = $("#copy").val().split("\t", -1);
+        var output = "{&{template:default} {{Nome=" + copy_values[0] +"}} {{Tipo=" + copy_values[1] + 
+                     "}} {{Origem=" + copy_values[2] + "}} {{Raça=" + copy_values[3] + "}} {{Classe=" +
+                     copy_values[4] + "}} {{Dificuldade=" + copy_values[5] +"}} {{Mana=" + copy_values[6] +
+                     "}} {{Decrição=" + copy_values[7] + "}} {{Requisitos=" + copy_values[8] + "}} {{Resultado=[[" + 
+                     copy_values[9] + "]]}}";
+        $("#template").val(output);
+
+        console.log(output);
+    });
+
+    $("#copy").keydown(function(e){
+        if (e.key == 'Tab') {
+        e.preventDefault();
+        var start = this.selectionStart;
+        var end = this.selectionEnd;
+
+        // set textarea value to: text before caret + tab + text after caret
+        this.value = this.value.substring(0, start) +
+        "\t" + this.value.substring(end);
+
+        // put caret at right position again
+        this.selectionStart =
+        this.selectionEnd = start + 1;
+  }
+    });
+</script>
+
+</body>
+</html>
